@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>TODO supply a title</title>
+        <title>TechShop</title>
         <meta charset="UTF-8"/>
     </head>
     <body>
-        <div>Bienvenido al mundo Spring</div>
-        <!-- Ese tipo de text no acepta espacios -->
-        <p th:text="Hola">Adios</p>
-        <!-- significa que le pasaron el mensaje el doble corchete 
-        y el dolar que busque el mensaje, mensaje se refiere al modelo creado en clienteController 
-         si se ponen solo las llaves {} se coloca como mensaje lo que uno escriba dentro-->
-        <p>[[${mensaje}]]</p>
+        <h2>Listado de Clientes</h2>
+        <br>
+        <hr>
+        <a th:href="@{/Cliente/nuevo}">Nuevo cliente</a>
 
-        <table border="0">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellidos</th>
-                    <th>Correo</th>
-                    <th>Telefono</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="Cliente : ${clientes}">
-                    <td>[[${Cliente.nombre}]]</td>
-                    <td>[[${Cliente.apellidos}]]</td>
-                    <td>[[${Cliente.correo}]]</td>
-                    <td>[[${Cliente.telefono}]]</td>
-                </tr>
-            </tbody>
-        </table>
+        <div th:if="${clientes != null and !clientes.empty}">
+            <table border="0">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellidos</th>
+                        <th>Correo</th>
+                        <th>Telefono</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="Cliente : ${clientes}">
+                        <td>[[${Cliente.nombre}]]</td>
+                        <td>[[${Cliente.apellidos}]]</td>
+                        <td>[[${Cliente.correo}]]</td>
+                        <td>[[${Cliente.telefono}]]</td>
+                        <td><a th:href="@{/Cliente/eliminar/} + ${Cliente.idCliente}">Eliminar</a>
+                        <a th:href="@{/Cliente/modificar/} + ${Cliente.idCliente}">Modificar</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${clientes == null or clientes.empty}">
+            <h3>No hay clientes que mostrar</h3>
+        </div>
     </body>
 </html>

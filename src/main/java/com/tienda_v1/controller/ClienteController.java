@@ -1,27 +1,52 @@
 package com.tienda_v1.controller;
 
 import com.tienda_v1.domain.Cliente;
+import com.tienda_v1.service.ClienteService;
 import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class ClienteController {
+    
+    @Autowired
+    private ClienteService clienteService;
+    
     // Mapping se refiere a una busqueda
     @GetMapping("/")
     public String inicio(Model model){
-        var saludo="Saludos desde el Back End";
-        model.addAttribute("mensaje", saludo);
-        // Se crea el objeto, para este debe hacerse el import de la clase Cliente
-        Cliente cliente1=new Cliente("Juan", "Contreras", "jcontreras@gmail.com", "80804567");
-        Cliente cliente2=new Cliente("Maria", "Contreras", "mcontreras@gmail.com", "60804560");
-        Cliente cliente3=new Cliente("Carlos", "Contreras", "ccontreras@gmail.com", "90804667");
         // Definir varios objetos al mismo tiempo
-        var clientes=Arrays.asList(cliente1, cliente2, cliente3);
+        var clientes=clienteService.getClientes();
         // Define el "titulo" del objeto
         model.addAttribute("clientes", clientes);
         // Va a buscar index en templates y retornar lo que tiene dentro
         return "index";
+    }
+    
+    @GetMapping("/Cliente/eliminar/{idCliente}")
+    public String eliminaCliente(Cliente cliente){
+        clienteService.deleteCliente(cliente);
+        return "redirect:/";
+    }
+    
+    @GetMapping("/Cliente/nuevo")
+    public String nuevoCliente(Cliente cliente){
+        return "modificaCliente";
+    }
+    // Si el metodo del text imput es post, se debe usar post mapping
+    @PostMapping("/Cliente/guardar")
+    public String guardarCliente(Cliente cliente){
+        clienteService.saveCliente(cliente);
+        return "redirect:/";
+    }
+    
+     @GetMapping("/Cliente/modificar/{idCliente}")
+    public String modificaCliente(Cliente cliente, Model model){
+        cliente = clienteService.getCliente(cliente);
+        model.addAttribute("cliente", cliente);
+        return "modificaCliente";
     }
 }

@@ -5,11 +5,10 @@ import java.io.Serializable;
 // Se coloca @Data y se crea el import, eso crea logicamente los gets y sets
 // No se van a ver, pero los programa
 import lombok.Data;
-import org.hibernate.annotations.Table;
 
 @Data
 @Entity
-@Table(name = "cliente")
+@Table(name="cliente")
 public class Cliente implements Serializable {
     // Se utiliza para que el numero de ID se asigne solo
     private static final long serialVersionUID = 1L;
