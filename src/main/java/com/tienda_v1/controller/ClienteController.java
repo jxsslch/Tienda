@@ -8,45 +8,42 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/Cliente")
 public class ClienteController {
     
     @Autowired
     private ClienteService clienteService;
     
-    // Mapping se refiere a una busqueda
-    @GetMapping("/")
+   @GetMapping("/listado")
     public String inicio(Model model){
-        // Definir varios objetos al mismo tiempo
         var clientes=clienteService.getClientes();
-        // Define el "titulo" del objeto
-        model.addAttribute("clientes", clientes);
-        // Va a buscar index en templates y retornar lo que tiene dentro
-        return "index";
-    }
-    
-    @GetMapping("/Cliente/eliminar/{idCliente}")
+        model.addAttribute("clientes",clientes);
+        return "/Cliente/listado";
+    }  
+    @GetMapping("/eliminar/{idCliente}")
     public String eliminaCliente(Cliente cliente){
         clienteService.deleteCliente(cliente);
-        return "redirect:/";
+        return "redirect:/Cliente/listado";
     }
     
-    @GetMapping("/Cliente/nuevo")
+    @GetMapping("/nuevo")
     public String nuevoCliente(Cliente cliente){
-        return "modificaCliente";
+        return "/Cliente/modifica";
     }
     // Si el metodo del text imput es post, se debe usar post mapping
-    @PostMapping("/Cliente/guardar")
+    @PostMapping("/guardar")
     public String guardarCliente(Cliente cliente){
         clienteService.saveCliente(cliente);
-        return "redirect:/";
+        return "redirect:/Cliente/listado";
     }
     
-     @GetMapping("/Cliente/modificar/{idCliente}")
+     @GetMapping("/modificar/{idCliente}")
     public String modificaCliente(Cliente cliente, Model model){
         cliente = clienteService.getCliente(cliente);
         model.addAttribute("cliente", cliente);
-        return "modificaCliente";
+        return "/Cliente/modifica";
     }
 }
