@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/Cliente")
+@RequestMapping("/cliente")
 public class ClienteController {
     
     @Autowired
@@ -21,29 +21,30 @@ public class ClienteController {
     public String inicio(Model model){
         var clientes=clienteService.getClientes();
         model.addAttribute("clientes",clientes);
-        return "/Cliente/listado";
+        model.addAttribute("totalClientes", clientes.size());
+        return "/cliente/listado";
     }  
     @GetMapping("/eliminar/{idCliente}")
     public String eliminaCliente(Cliente cliente){
         clienteService.deleteCliente(cliente);
-        return "redirect:/Cliente/listado";
+        return "redirect:/cliente/listado";
     }
     
     @GetMapping("/nuevo")
     public String nuevoCliente(Cliente cliente){
-        return "/Cliente/modifica";
+        return "/cliente/modifica";
     }
     // Si el metodo del text imput es post, se debe usar post mapping
     @PostMapping("/guardar")
     public String guardarCliente(Cliente cliente){
         clienteService.saveCliente(cliente);
-        return "redirect:/Cliente/listado";
+        return "redirect:/cliente/listado";
     }
     
      @GetMapping("/modificar/{idCliente}")
     public String modificaCliente(Cliente cliente, Model model){
         cliente = clienteService.getCliente(cliente);
         model.addAttribute("cliente", cliente);
-        return "/Cliente/modifica";
+        return "/cliente/modifica";
     }
 }
