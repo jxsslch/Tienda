@@ -13,36 +13,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/categoria")
 public class CategoriaController {
-    
+
     @Autowired
     private CategoriaService categoriaService;
-    
-   @GetMapping("/listado")
-    public String inicio(Model model){
-        var categorias=categoriaService.getCategorias(false);
-        model.addAttribute("categorias",categorias);
+
+    @GetMapping("/listado")
+    public String inicio(Model model) {
+        var categorias = categoriaService.getCategorias(false);
+        model.addAttribute("categorias", categorias);
         model.addAttribute("totalCategorias", categorias.size());
         return "/categoria/listado";
-    }  
+    }
+
     @GetMapping("/eliminar/{idCategoria}")
-    public String eliminaCategoria(Categoria categoria){
+    public String eliminaCategoria(Categoria categoria) {
         categoriaService.deleteCategoria(categoria);
         return "redirect:/categoria/listado";
     }
-    
+
     @GetMapping("/nuevo")
-    public String nuevoCategoria(Categoria categoria){
+    public String nuevoCategoria(Categoria categoria) {
         return "/categoria/modifica";
     }
+
     // Si el metodo del text imput es post, se debe usar post mapping
     @PostMapping("/guardar")
-    public String guardarCategoria(Categoria categoria){
+    public String guardarCategoria(Categoria categoria) {
         categoriaService.saveCategoria(categoria);
         return "redirect:/categoria/listado";
     }
-    
-     @GetMapping("/modificar/{idCategoria}")
-    public String modificaCategoria(Categoria categoria, Model model){
+
+    @GetMapping("/modificar/{idCategoria}")
+    public String modificaCategoria(Categoria categoria, Model model) {
         categoria = categoriaService.getCategoria(categoria);
         model.addAttribute("categoria", categoria);
         return "/categoria/modifica";
