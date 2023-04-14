@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.tienda_v1.service;
 
 import com.tienda_v1.dao.UsuarioDao;
@@ -19,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UsuarioService implements UserDetailsService{
     @Autowired
     private UsuarioDao usuarioDao;
-
+    
     @Override
     @Transactional(readOnly=true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,7 +25,7 @@ public class UsuarioService implements UserDetailsService{
         //Si no existe el usuario lanza una excepción
         if(usuario == null){
             throw new UsernameNotFoundException(username);
-    }
+        }
         //Si está acá es porque existe el usuario... sacamos los roles que tiene
         var roles = new ArrayList<GrantedAuthority>();
         
@@ -39,5 +35,4 @@ public class UsuarioService implements UserDetailsService{
         //Se devuelve User (clase de userDetails)
         return new User(usuario.getUsername(), usuario.getPassword(), roles);
     }    
-    
 }
